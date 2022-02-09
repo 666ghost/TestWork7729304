@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  node:
+    container_name: ${APP_NAME}_node
+    image: "node:17"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    tty: true
