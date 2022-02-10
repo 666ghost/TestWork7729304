@@ -3,6 +3,7 @@
 namespace App\Modules\User\Models;
 
 use App\Modules\Stream\Models\Stream;
+use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -23,7 +24,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'twitch',
+        'bio',
         'password',
     ];
 
@@ -47,6 +48,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * @return UserFactory
+     */
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
+
+    /**
      * @return HasMany
      */
     public function streams(): HasMany
@@ -59,6 +68,6 @@ class User extends Authenticatable
      */
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class, 'user_role');
     }
 }

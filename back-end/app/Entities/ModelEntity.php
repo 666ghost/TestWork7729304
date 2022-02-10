@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 abstract class ModelEntity
 {
-    /** @var mixed|Model  */
+    /** @var mixed|Model|Builder */
     protected $model;
 
     /**
@@ -51,6 +52,27 @@ abstract class ModelEntity
      */
     public function find(int $id)
     {
-        return $this->model->find($id);
+        return $this->model->findOrFail($id);
+    }
+
+    /**
+     * @param $field
+     * @param $value
+     * @return Builder|Model
+     */
+    public function findBy($field, $value)
+    {
+        return $this->model->where($field, $value)->firstOrFail();
+    }
+
+
+    /**
+     * @param $field
+     * @param $value
+     * @return Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function in($field, $value)
+    {
+        return $this->model->whereIn($field, $value)->get();
     }
 }
